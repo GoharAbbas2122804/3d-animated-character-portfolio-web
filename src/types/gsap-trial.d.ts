@@ -42,9 +42,11 @@ declare module "gsap/ScrollSmoother" {
     scrollTo(target: string | number | HTMLElement, parameters?: any): void;
     paused(value?: boolean): boolean | ScrollSmoother;
     progress(value?: number): number | ScrollSmoother;
-    
     scrollTop(): number;
+    
     scrollTrigger: any;
     vars: any;
   }
+  
+  export function refresh(value?: boolean): void;
 }
