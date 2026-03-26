@@ -9,6 +9,7 @@ import SocialIcons from "./SocialIcons";
 import WhatIDo from "./WhatIDo";
 import Work from "./Work";
 import setSplitText from "./utils/splitText";
+import AppErrorBoundary from "./AppErrorBoundary";
 
 const TechStack = lazy(() => import("./TechStack"));
 
@@ -27,7 +28,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
     return () => {
       window.removeEventListener("resize", resizeHandler);
     };
-  }, [isDesktopView]);
+  }, []);
 
   return (
     <div className="container-main">
@@ -44,9 +45,17 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <Career />
             <Work />
             {isDesktopView && (
-              <Suspense fallback={<div>Loading....</div>}>
-                <TechStack />
-              </Suspense>
+              <AppErrorBoundary
+                fallback={
+                  <section className="techstack techstack-fallback">
+                    <h2>My Techstack</h2>
+                  </section>
+                }
+              >
+                <Suspense fallback={<div>Loading....</div>}>
+                  <TechStack />
+                </Suspense>
+              </AppErrorBoundary>
             )}
             <Contact />
           </div>
