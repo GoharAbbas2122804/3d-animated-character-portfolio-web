@@ -9,6 +9,7 @@ interface ParaElement extends HTMLElement {
 }
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
+let hasRefreshListener = false;
 
 export default function setSplitText() {
   ScrollTrigger.config({ ignoreMobileResize: true });
@@ -76,5 +77,8 @@ export default function setSplitText() {
     );
   });
 
-  ScrollTrigger.addEventListener("refresh", () => setSplitText());
+  if (!hasRefreshListener) {
+    ScrollTrigger.addEventListener("refresh", setSplitText);
+    hasRefreshListener = true;
+  }
 }

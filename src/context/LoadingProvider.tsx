@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import Loading from "../components/Loading";
+import { revealApp } from "../components/utils/revealApp";
 
 interface LoadingType {
   isLoading: boolean;
@@ -24,7 +25,20 @@ export const LoadingProvider = ({ children }: PropsWithChildren) => {
     setIsLoading,
     setLoading,
   };
-  useEffect(() => {}, [loading]);
+  useEffect(() => {
+    if (!isLoading) return;
+
+    const timeout = window.setTimeout(() => {
+      console.warn("Loading timed out, showing the portfolio without the intro.");
+      setLoading(100);
+      revealApp();
+      setIsLoading(false);
+    }, 12000);
+
+    return () => {
+      window.clearTimeout(timeout);
+    };
+  }, [isLoading]);
 
   return (
     <LoadingContext.Provider value={value as LoadingType}>

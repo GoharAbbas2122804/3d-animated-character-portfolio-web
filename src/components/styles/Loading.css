@@ -315,11 +315,20 @@
   top: 50%;
   left: 0;
   width: 100%;
+  overflow: hidden;
   transform: translateY(-50%);
   color: var(--backgroundColor);
   font-size: 60px;
   font-weight: 600;
   text-transform: uppercase;
+}
+
+.loading-marquee-track {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: loadingMarquee 18s linear infinite;
 }
 
 .loading-marquee span {
@@ -337,6 +346,16 @@
   border-radius: 50px;
   left: 0px;
   transform: translate(-50%, -50%);
+}
+
+@keyframes loadingMarquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-33.33%);
+  }
 }
 
 @keyframes ball25 {

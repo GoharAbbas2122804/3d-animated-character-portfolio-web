@@ -16,9 +16,9 @@ const Career = () => {
             <div className="career-info-in">
               <div className="career-role">
                 <h4>Full Stack Developer</h4>
-                <h5>Ikshan</h5>
+                <h5>Gohar</h5>
               </div>
-              <h3>2020</h3>
+              <h3>2025</h3>
             </div>
             <p>
               Built 6+ complete applications using React.js. Integrated backend
@@ -32,7 +32,7 @@ const Career = () => {
                 <h4>Senior Full Stack Developer</h4>
                 <h5>Monocept (Max Life Insurance)</h5>
               </div>
-              <h3>2021</h3>
+              <h3>2025</h3>
             </div>
             <p>
               Led two development teams on Mpro, a large-scale insurance
@@ -49,9 +49,7 @@ const Career = () => {
               <h3>NOW</h3>
             </div>
             <p>
-              Building Solid, a proprietary low-code platform using Angular,
-              Next.js & NestJS. Delivering production-ready CMS-based projects
-              including e-commerce, CRM, and import-export automation systems.
+             Expanding my skills in Artificial Intelligence and Machine Learning. Currently working on AI-driven projects, leveraging my full stack development experience to build intelligent applications.
             </p>
           </div>
         </div>

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import "./styles/Loading.css";
 import { useLoading } from "../context/LoadingProvider";
-
-import Marquee from "react-fast-marquee";
+import { revealApp } from "./utils/revealApp";
 
 const Loading = ({ percent }: { percent: number }) => {
   const { setIsLoading } = useLoading();
@@ -10,27 +9,42 @@ const Loading = ({ percent }: { percent: number }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
 
-  if (percent >= 100) {
-    setTimeout(() => {
+  useEffect(() => {
+    if (percent < 100 || loaded) return;
+
+    const loadedTimeout = window.setTimeout(() => {
       setLoaded(true);
-      setTimeout(() => {
-        setIsLoaded(true);
-      }, 1000);
     }, 600);
-  }
+
+    return () => {
+      window.clearTimeout(loadedTimeout);
+    };
+  }, [percent, loaded]);
 
   useEffect(() => {
-    import("./utils/initialFX").then((module) => {
-      if (isLoaded) {
-        setClicked(true);
-        setTimeout(() => {
-          if (module.initialFX) {
-            module.initialFX();
-          }
-          setIsLoading(false);
-        }, 900);
-      }
-    });
+    if (!loaded || isLoaded) return;
+
+    const isLoadedTimeout = window.setTimeout(() => {
+      setIsLoaded(true);
+    }, 1000);
+
+    return () => {
+      window.clearTimeout(isLoadedTimeout);
+    };
+  }, [loaded, isLoaded]);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    setClicked(true);
+    const timeout = window.setTimeout(async () => {
+      await revealApp();
+      setIsLoading(false);
+    }, 900);
+
+    return () => {
+      window.clearTimeout(timeout);
+    };
   }, [isLoaded]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
@@ -61,10 +75,14 @@ const Loading = ({ percent }: { percent: number }) => {
       </div>
       <div className="loading-screen">
         <div className="loading-marquee">
-          <Marquee>
-            <span> Full Stack Developer</span> <span>Software Engineer</span>
-            <span> Full Stack Developer</span> <span>Software Engineer</span>
-          </Marquee>
+          <div className="loading-marquee-track">
+            <span>Full Stack Developer</span>
+            <span>Software Engineer</span>
+            <span>Full Stack Developer</span>
+            <span>Software Engineer</span>
+            <span>Full Stack Developer</span>
+            <span>Software Engineer</span>
+          </div>
         </div>
         <div
           className={`loading-wrap ${clicked && "loading-clicked"}`}

@@ -10,6 +10,16 @@ export let smoother: ScrollSmoother;
 
 const Navbar = () => {
   useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
+    const existingSmoother = (ScrollSmoother as unknown as {
+      get?: () => (ScrollSmoother & { kill?: () => void }) | undefined;
+    }).get?.();
+    existingSmoother?.kill?.();
+
     smoother = ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
       content: "#smooth-content",
@@ -20,7 +30,7 @@ const Navbar = () => {
       ignoreMobileResize: true,
     });
 
-    smoother.scrollTop();
+    smoother.scrollTo(0);
     smoother.paused(true);
 
     let links = document.querySelectorAll(".header ul a");
@@ -37,9 +47,15 @@ const Navbar = () => {
         }
       });
     });
-    window.addEventListener("resize", () => {
+    const resizeHandler = () => {
       smoother.refresh();
-    });
+    };
+    window.addEventListener("resize", resizeHandler);
+
+    return () => {
+      window.removeEventListener("resize", resizeHandler);
+      (smoother as ScrollSmoother & { kill?: () => void })?.kill?.();
+    };
   }, []);
   return (
     <>
